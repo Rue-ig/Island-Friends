@@ -295,7 +295,7 @@
           
           // Step 2: Sign in with email/password
           await auth.signInWithEmailAndPassword(email, password);
-          window.location.href = '/dashboard.html'; // Redirect on success
+          window.location.href = '/explore.html'; // Redirect on success
         } catch (error) {
           signInError.textContent = error.message;
         }

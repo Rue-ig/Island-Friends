@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+
+    <title>Explore</title>
+
+</head>
+
+<body>
+    <nav class="navbar">
+        <div id="title-container">
+            <img src="../images/islandfriendslogowhite.png" alt="Island Friends Logo" id="logo">
+            <div class="title-text-group">
+                <a href="explore.html" id="logo-link">
+                    <h1 id="title">Island Friends</h1>
+                </a>
+                <h6 id="tagline">Where Caribbean Wildlife Come Alive!</h6>
+            </div>
+        </div>
+
+
+        <a href="index.html" id="sign-out-link"
+            style="position: absolute; top: 10px; right: 10px; text-decoration: none;">Sign Out</a>
+
+        <ul class="nav-links">
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="About Us.html">About Us</a></li>
+            <li><a href="Favourites.html">Favourites</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div class="header-text">
+            <h2>Meet our Island Friends!</h2>
+            <h3>Discover the vibrant wildlife of the Caribbean!</h3>
+          </div>
+          
+        <br>
+
+        <!-- Slideshow Section -->
+        <div class="slideshow-container" id="slideshow-container">
+            <div id="slideshow-loading-message" style="text-align: center; font-size: 1.2rem; color: #28190E; margin: 20px;">
+                Loading slideshow, please wait...
+            </div>
+            <!-- Slides are injected here by JS -->
+            <a class="prev" onclick="plusSlides(-1)">❮</a>
+            <a class="next" onclick="plusSlides(1)">❯</a>
+        </div>
+          
+        <!-- Dot indicators if you're using them -->
+        <div id="dot-container" class="dots"></div>
+          
+
+
+        <!-- Did You Know? Section -->
+        <section class="fact-section">
+            <h2>Did You Know?</h2>
+            <p id="fact">The Caribbean is home to over 700 species of birds...</p>
+            <button id="nextfact" onclick="showNextFact()">Next Fact</button>
+        </section>
+
+        
+        <!-- Filter Buttons -->
+        <div id="filter-container">
+            <label for="type-filter">Filter by Type:</label>
+            <select id="type-filter">
+                <option value="all">All</option>
+            </select>
+
+            <label for="country-filter">Filter by Country:</label>
+            <select id="country-filter">
+                <option value="all">All</option>
+            </select>
+        </div>
+
+        <!-- Loading Message -->
+        <div id="loading-message" style="text-align: center; font-size: 1.2rem; color: #28190E; margin: 20px;">
+            Just a moment...
+        </div>
+
+        <!-- Animal Gallery Section -->
+        <div class="secondary-content">
+            <div class="gallery" id="gallery">
+                <!-- <div class="card">
+                    <img src="../images/wildlifebackground.jpeg" alt="Green Iguana">
+                <h2>Green Iguana</h2>
+                <p>A chill tree-loving lizard found across the Caribbean.</p>
+                <button class="fav-btn">⭐ Favorite</button> -->
+                <!-- </div> -->
+
+                <!-- <div class="card">
+                    <img src="../images/sisserouparrot.jpg" alt="Macaw">
+                    <h2>Macaw</h2>
+                    <p>Bright, talkative, and full of vibes. You’ll hear them before you see them!</p>
+                    <button class="fav-btn">⭐ Favorite</button>
+                </div>
+                
+                <div class="card">
+                    <img src="https://source.unsplash.com/300x200/?sea-turtle" alt="Sea Turtle">
+                <h2>Hawksbill Turtle</h2>
+                <p>Lives in coral reefs — graceful and endangered. Respect di reef!</p>
+                <button class="fav-btn">⭐ Favorite</button>
+            </div> -->
+            </div>
+        </div>
+        <br>
+        <!-- Back to Top Button -->
+        <div style="text-align: center; margin: 20px; font-weight: bold;">
+            <a href="#top" style="text-decoration: none; font-size: 1.2rem; color: #28190E;">⬆ Back to Top</a>
+        </div>
+    </main>
+
+    <script src="../main.js"></script>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <img src="../images/islandfriendslogowhite.png" alt="Island Friends Logo" id="footerlogo">
+                <div class="footer-text-group">
+                    <h3>Island Friends</h3>
+                    <h6>Where Caribbean Wildlife Come Alive!</h6>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <a href="explore.html">Explore</a>
+                <a href="About Us.html">About Us</a>
+                <a href="Favourites.html">Favourites</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Island Friends. Built in di Caribbean, for di Caribbean — by Regional Variables.</p>
+        </div>
+    </footer>
+
+    <script>
+
+
+
+    </script>
+
+
+</body>
+
+</html>
