@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Favourite Animals</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <nav class="navbar">
+    <div id="title-container">
+        <img src="./images/islandfriendslogowhite.png" alt="Island Friends Logo" id="logo">
+        <div class="title-text-group">
+          <a href="explore.html" id="logo-link">
+            <h1 id="title">Island Friends</h1>
+          </a>
+          <h6 id="tagline">Where Caribbean Wildlife Come Alive!</h6>
+        </div>
+      </div>          
+      
+    <a href="index.html" id="sign-out-link" style="position: absolute; top: 10px; right: 10px; text-decoration: none;">Sign Out</a>
+
+    <ul class="nav-links">
+        <li><a href="explore.html">Explore</a></li>
+        <li><a href="About Us.html">About Us</a></li>
+        <li><a href="Favourites.html">Favourites</a></li>
+    </ul>
+</nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <h1 style="text-align: center; color: #28190E; font-size: 2rem;">🌟 My Favourites!</h1>
+    <div class="gallery" id="favourites-list"></div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-left">
+            <img src="./images/islandfriendslogowhite.png" alt="Island Friends Logo" id="footerlogo">
+            <div class="footer-text-group">
+              <h3>Island Friends</h3>
+              <h6>Where Caribbean Wildlife Come Alive!</h6>
+            </div>
+          </div>
+          
+        <div class="footer-links">
+            <a href="explore.html">Explore</a>
+            <a href="about-us.html">About Us</a>
+            <a href="favourites.html">Favourites</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Island Friends. Built in di Caribbean, for di Caribbean — by Regional Variables.</p>
+    </div>
+</footer>
+
+  <!-- JavaScript -->
+  <script>
+    function loadFavourites() {
+      const currentUser = localStorage.getItem('currentUser');
+      if (!currentUser) {
+        alert('You must be signed in to view your favourites.');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users')) || {};
+      const favourites = users[currentUser]?.favourites || [];
+
+      const container = document.getElementById('favourites-list');
+      if (favourites.length === 0) {
+        container.innerHTML = "<p>No favourites added yet.</p>";
+        return;
+      }
+
+      let html = '';
+      favourites.forEach((rec) => {
+        html += `
+          <div class="card">
+            <img src="${rec.Image || '../images/placeholder.png'}" alt="${rec["Common Name"]}">
+            <h3>${rec["Common Name"]}</h3>
+            <p><strong>Scientific Name:</strong> ${rec["Scientific Name"] || 'N/A'}</p>
+            <p>${rec["Description"] || 'No description available.'}</p>
+            <p><strong>Type:</strong> ${rec["type"] || 'N/A'}</p>
+            <button class="fav-btn" onclick="removeFromFavourites('${rec["Common Name"].replace(/'/g, "\\'")}')">❌ Remove</button>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function removeFromFavourites(commonName) {
+      const currentUser = localStorage.getItem('currentUser');
+      if (!currentUser) {
+        alert('You must be signed in to remove favourites.');
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users')) || {};
+      const favourites = users[currentUser]?.favourites || [];
+
+      // Filter out the item to be removed
+      users[currentUser].favourites = favourites.filter(item => item["Common Name"] !== commonName);
+
+      // Save the updated favourites back to localStorage
+      localStorage.setItem('users', JSON.stringify(users));
+
+      // Refresh the favourites list
+      loadFavourites();
+
+      alert(`${commonName} has been removed from your favourites.`);
+    }
+
+    loadFavourites();
+  </script>
+</body>
+</html>

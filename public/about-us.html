@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+
+    <style>
+        .main-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .text-container {
+            flex: 1;
+        }
+
+        .image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .problem-container {
+            background-color: #fefee3;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .problem-container h3 {
+            color: #28190E;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .problem-container p {
+            text-align: justify;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .solution-container {
+            background: linear-gradient(135deg, #fefee3 0%, #a6cf8c 100%);
+
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .solution-container h3 {
+            color: #1a5e1a;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .solution-container p {
+            text-align: justify;
+            color: #333;
+            line-height: 1.6;
+        }
+    </style>
+
+    <title>About Us</title>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div id="title-container">
+            <img src="./images/islandfriendslogowhite.png" alt="Island Friends Logo" id="logo">
+            <div class="title-text-group">
+              <a href="explore.html" id="logo-link">
+                <h1 id="title">Island Friends</h1>
+              </a>
+              <h6 id="tagline">Where Caribbean Wildlife Come Alive!</h6>
+            </div>
+          </div>          
+          
+
+        <a href="index.html" id="sign-out-link" style="position: absolute; top: 10px; right: 10px; text-decoration: none;">Sign Out</a>
+    
+        <ul class="nav-links">
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="about-us.html">About Us</a></li>
+            <li><a href="favourites.html">Favourites</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div class="text-container">
+            <div class="problem-container">
+                <h3>Problem</h3>
+                <p>The Caribbean region is home to remarkable biodiversity, featuring an array of unique and often endemic species that captivate nature enthusiasts and scholars alike.</p>
+                <br>
+                <p>Despite this, individuals such as students, casual explorers, and nature lovers face significant challenges in accessing engaging and centralized information about these species. Existing resources are fragmented, scattered across various platforms, and are often overly scientific or outdated, which can discourage younger audiences or casual learners. Additionally, current content fails to incorporate interactive or visually appealing features, limiting its accessibility and appeal.</p>
+                <br>
+                <p>This lack of an intuitive and vibrant platform results in missed opportunities to foster pride in local biodiversity and promote environmental awareness, ultimately creating barriers for individuals who wish to explore and appreciate the rich wildlife in their own backyard.</p>
+            </div>
+            <div class="solution-container">
+                <h3>Solution</h3>
+                <p><b>Island Friends</b> presents an innovative solution to bridge the gap in Caribbean wildlife education by offering a web-based catalogue that presents the region’s biodiversity in a fun, interactive, and educational way.</p>
+                <br>
+                <p>Designed to cater to students, travellers, and locals, the platform provides a centralized hub of information that combines rich media, concise facts, and intuitive tools for exploration. Users can filter species by island or type, and "favourite" animals, which create a personalized and enjoyable learning experience.</p>
+                <br>
+                <p>The platform’s vibrant design, accessibility, and engaging functionality inspire a sense of pride in local biodiversity while encouraging environmental awareness and conservation efforts. By transforming wildlife learning into an engaging activity, Island Friends helps users of all ages connect with and appreciate the unique species that define the Caribbean.</p>
+            </div>
+        </div>
+        <div class="image-container">
+            <img src="./images/islandfriendslogowhite.png" alt="Island Friends Logo">
+        </div>
+    </main>
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <img src="./images/islandfriendslogowhite.png" alt="Island Friends Logo" id="footerlogo">
+                <div class="footer-text-group">
+                  <h3>Island Friends</h3>
+                  <h6>Where Caribbean Wildlife Come Alive!</h6>
+                </div>
+              </div>
+              
+            <div class="footer-links">
+                <a href="explore.html">Explore</a>
+                <a href="about-us.html">About Us</a>
+                <a href="favourites.html">Favourites</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Island Friends. Built in di Caribbean, for di Caribbean — by Regional Variables.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
