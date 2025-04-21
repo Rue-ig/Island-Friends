@@ -9,102 +9,379 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Home</title>
+    <title>Sign In</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 
     <style>
-      *{
-        box-sizing: border-box;  
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
-
-      html{
-        height: 100vh;
-        width: 100vw;
-        margin:0;
-        padding:0;
-      }
-
-      body{
-        margin:0;
-        padding:0;
+  
+      body, html {
         height: 100%;
-        width: 100%;
+        font-family: poppins, Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: url('./images/signinbg.png') no-repeat center center/cover; /* Full-page background image */
+        overflow: hidden;
       }
-
+  
+      .container {
+        display: flex;
+        justify-content: space-between; /* Space between the two containers */
+        align-items: flex-start; /* Align items at the top */
+        height: auto; /* Adjust height to fit content */
+        margin-top: 150px; /* Move containers further down */
+        padding: 0 50px; /* Add padding for spacing */
+      }
+  
+      .right {
+        flex: 1; /* Allow the form container to take up space */
+        margin-right: 20px; /* Add spacing between the form and the widget */
+      }
+  
+      .form-box, .animal-widget {
+        background-color: rgba(241, 248, 233, 0.6); /* Soft green with 60% transparency */
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(46, 125, 50, 0.5); /* Greenish shadow */
+        width: 320px; /* Match the width of the animal widget */
+        flex-shrink: 0; /* Prevent shrinking */
+      }
+  
+      .form-box {
+        max-width: none; /* Remove the max-width restriction */
+      }
+  
+      h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #2e7d32; /* Forest green */
+      }
+  
+      input {
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        border: 1px solid #a5d6a7; /* Light green border */
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+  
+      input:focus {
+        border-color: #2e7d32; /* Forest green */
+        outline: none;
+        box-shadow: 0 0 5px rgba(46, 125, 50, 0.5);
+      }
+  
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: #2e7d32; /* Forest green */
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+  
+      button:hover {
+        background-color: #1b5e20; /* Darker green */
+      }
+  
+      .options {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 0.9rem;
+      }
+  
+      .options a {
+        color: #2e7d32; /* Forest green */
+        text-decoration: none;
+        margin: 0 5px;
+      }
+  
+      .options a:hover {
+        text-decoration: underline;
+      }
+  
+      /* Animations */
+      @keyframes slideRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+  
+      @keyframes fadeUp {
+        from { transform: translateY(30px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+  
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+  
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+          margin-top: 20px; /* Adjust spacing for smaller screens */
+        }
+  
+        .right {
+          flex: 1;
+          padding: 30px 10px;
+        }
+  
+        .form-box {
+          width: 100%;
+          padding: 20px; /* Reduce padding for smaller screens */
+        }
+  
+        h2 {
+          font-size: 1.5rem; /* Adjust heading size */
+        }
+      }
+  
+      header {
+        display: block; /* Restore the header */
+        position: absolute;
+        top: 10px; /* Move header up */
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        animation: fadeIn 3s ease-in-out;
+      }
+  
+      header h1 {
+        font-family: 'Anton', sans-serif; /* Use Anton font */
+        font-size: 100px; /* Adjust font size */
+        color: white; /* Set font color to white */
+        font-weight: 700;
+        margin: 0;
+      }
+  
+      header p {
+        font-size: 1.5rem; /* Slightly larger font size */
+        color: #2e7d32; /* Forest green */
+        margin-top: 10px;
+      }
+  
+      /* Subtle Animations for Form Elements */
+      input, button {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+  
+      input:hover, button:hover {
+        transform: scale(1.02); /* Slight zoom effect */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+      }
+  
+      /* Background Overlay */
+      body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4); /* Semi-transparent overlay */
+        z-index: -1; /* Place behind content */
+      }
+  
+      /* Tooltip Styling */
+      .tooltip {
+        position: relative;
+        display: inline-block;
+      }
+  
+      .tooltip .tooltip-text {
+        visibility: hidden;
+        width: 200px;
+        background-color: #2e7d32; /* Forest green */
+        color: #ffc9b9;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%; /* Position above the input */
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+  
+      .tooltip:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+      }
+  
+      .animal-widget {
+        background-color: rgba(241, 248, 233, 0.6); /* Soft green with 60% transparency */
+        padding: 25px 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        width: 320px;
+        flex-shrink: 0; /* Prevent the widget from shrinking */
+        text-align: center; /* Center-align content */
+        animation: fadeUp 3s ease-in-out;
+      }
+  
+      .animal-widget h2 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+  
+      .animal-subtitle {
+        font-size: 16px;
+        color: #2e7d32; /* Forest green */
+        margin-bottom: 15px;
+      }
+  
+      .animal-image {
+        width: 100%;
+        height: auto;
+        max-height: 200px; /* Limit the height of the image */
+        border-radius: 8px;
+        object-fit: cover; /* Ensure the image fits nicely */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow to the image */
+      }
+  
+      /* Style for the animal name using the Anton font */
+      #animal-name {
+        font-family: poppins, Arial, Helvetica, sans-serif;
+        font-size: 24px;
+        color: #2e7d32; /* Forest green */
+        margin-bottom: 15px;
+      }
+  
+      .form-box {
+        animation: fadeUp 3s ease-in-out;
+      }
     </style>
 
   </head>
   <body>
-    <nav class="purple">
-      <div class="nav-wrapper" style="padding-left: 20px; padding-right: 20px;">
-        <a href="#" class="brand-logo">Home <span id="user"></span></a>
-        <ul class="right">
-          <li>
-            <button class="btn waves-effect waves-light" id="logoutBtn" style="display: none">
-              Logout
-            </button>
-          </li>
-          <li>
-            <button class="btn waves-effect waves-light" id="loginBtn" >
-              Login
-            </button>
-          </li>
-        </ul>
-       
-      </div>
-    </nav>
+  <!-- Header Section -->
+  <header>
+    <h1>ISLAND FRIENDS</h1>
+  </header>
 
-    <div class="row">
+  <!-- Main Content -->
+  <div class="container" id="main-content">
+    <!-- Left Side (Form) -->
+    <div class="right">
+      <div class="form-box">
+        <h2 id="form-title">Sign In</h2>
 
-      
-      <section class="col s12 m4 push-m8">
-                
-          <div class="row">
-            <div class="col s10">
-              <form id="reviewForm">
+        <form id="sign-in-form">
+          <div id="error-message"></div> 
+          <div class="tooltip">
+            <input type="text" id="sign-in-username" name="username" placeholder="Username" autocomplete="username" required />
+            <span class="tooltip-text">Enter your username</span>
+          </div>
+          <div class="tooltip">
+            <input type="password" id="sign-in-password" name="password" placeholder="Password" autocomplete="current-password" required />
+            <span class="tooltip-text">Enter your password</span>
+          </div>
+          <button type="submit" id="loginBtn">Sign In</button>
+        </form>
 
-                <h1 style="font-size: 1.5em">Selected: <span id="selectedName"></span></h1>
-  
-                <input type="hidden" id="selectedBook" name="isbn" value="null">
-                <div class="input-field">
-                    <textarea id="text" name="text" class="materialize-textarea"></textarea>
-                    <label for="text">Textarea</label>
-                </div>
-  
-                <div class="row">
-                    <div class="input-field col s4 right">
-                    <button class="btn waves-effect waves-light purple" id="reviewBtn"  type="submit">
-                        Submit
-                    </button>
-                    </div>  
-                </div>
-              </form>
-            </div>
+        <form id="sign-up-form" style="display: none;">
+          <div id="error-message"></div> 
+          <div class="tooltip">
+            <input type="text" id="sign-up-username" name="username" placeholder="Username" autocomplete="username" required />
+            <span class="tooltip-text">Choose a unique username</span>
+          </div>
+          <div class="tooltip">
+            <input type="password" id="sign-up-password" name="password" placeholder="Password" autocomplete="new-password" required />
+            <span class="tooltip-text">Password must be at least 8 characters</span>
           </div>
 
-          <div class="row hide-on-small-only" style="height: 40vh; overflow-y: scroll;">
-                <ul class="collection" id="reviews">
-                  
-                </ul>
+          <div class="tooltip">
+            <input type="password" id="sign-up-confirm-password" name="confirm-password" placeholder="Confirm Password" autocomplete="new-password" required />
+            <span class="tooltip-text">Re-enter your password</span>
           </div>
-      
-      </section>
-
-      <section class="col s12 m8 pull-m4" style="overflow-y:scroll; height: 86vh; margin-top: 10px;">
-        <div class="row" id="books">
-           
+          <button type="submit">Sign Up</button>
+        </form>
+        <div class="options">
+          <a href="#" id="toggle-link">Don't have an account? Sign Up</a>
         </div>
-      </section>
-
-
+      </div>
     </div>
 
+    <!-- Right Side (Animal Widget) -->
+    <div class="animal-widget">
+      <div class="animal-subtitle" id="animal-name">Loading...</div>
+      <img alt="Animal of the Day" class="animal-image" id="animal-image" style="display: none;" />
+    </div>
+  </div>
+
+
     <script type="module">
+       // Toggle between Sign In and Sign Up forms
+      const toggleLink = document.getElementById('toggle-link');
+      const formTitle = document.getElementById('form-title');
+      const signInForm = document.getElementById('sign-in-form');
+      const signUpForm = document.getElementById('sign-up-form');
+      toggleLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (signInForm.style.display === 'none') {
+          signInForm.style.display = 'block';
+          signUpForm.style.display = 'none';
+          formTitle.textContent = 'Sign In';
+          toggleLink.textContent = "Don't have an account? Sign Up";
+        } else {
+          signInForm.style.display = 'none';
+          signUpForm.style.display = 'block';
+          formTitle.textContent = 'Sign Up';
+          toggleLink.textContent = 'Already have an account? Sign In';
+        }
+      });
+
+      // Fetch and display the Animal of the Day
+      async function fetchAnimalOfTheDay() {
+        const apiUrl = 'https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLh-vRW6fxasGQMdqJGzo9NFWjegB-FMraDNUMUSFlRLaSMz_33hK6kiRY-0C0xNgob6w307ciFCz-bOWPZfovIwM-ky7y89iEFlB1FSuvjtmXXJx-rhgL9yHD6_c2LEUZ77VCKMJYTHdBkk85ThzbfoPeqTQSdmsmsodf9jWEdgmyPKrBqMU9cY9dyA0Fo1_3ogr-ZM7zgujNJ0A7Z6jswCyT-0BNi8zsPfOVwVnd06391J7qxG5icZjR90PhDxMDBebEXdCml7CfFCBKCz9XoLpPds6Zl12hdEcYJgavBVSw9jY5O0A5qGd_pilJSLzs01NBVZ&lib=MWE_QBjJXwXXD4bogbvGarrsOYE1fA0Zf';
+
+        try {
+          const response = await fetch(apiUrl);
+          const data = await response.json();
+          const records = data.records || data.data || [];
+
+          // Select a random animal
+          const randomAnimal = records[Math.floor(Math.random() * records.length)];
+
+          // Update the Animal of the Day section
+          document.getElementById('animal-name').textContent = randomAnimal["Common Name"] || "Unknown Animal";
+          const animalImage = document.getElementById('animal-image');
+          animalImage.src = randomAnimal.Image || 'https://via.placeholder.com/320x200?text=No+Image+Available';
+          animalImage.alt = randomAnimal["Common Name"] || "Animal of the Day";
+          animalImage.style.display = 'block'; // Show the image
+        } catch (error) {
+          console.error('Failed to fetch Animal of the Day:', error);
+          document.getElementById('animal-name').textContent = "Failed to load animal.";
+        }
+      }
+
+      // Call the function to fetch the Animal of the Day
+      fetchAnimalOfTheDay();
+
       import { signIn, logout, auth, setAuthListeners } from './auth.js';
       import { getBooks, getReviews, createReview, deleteReview } from './data.js';
 
       let loginBtn = document.querySelector('#loginBtn');
       let logoutBtn = document.querySelector('#logoutBtn');
-      let reviewForm = document.querySelector('#reviewForm');
 
       function setLoggedInUI(){
           M.toast({html: 'Logged In!'})
@@ -124,78 +401,6 @@
       logoutBtn.addEventListener('click', logout);
       loginBtn.addEventListener('click', signIn);
       setAuthListeners(setLoggedInUI, setLoggedOutUI);
-
-      function renderReviews(reviews){
-        let reviewsList = document.querySelector('#reviews');
-        let html = '';
-        for (let review of reviews){
-            html += `
-                <li class="collection-item">
-                    <p>Review: ${review.text}</p>
-                    <p>Reviewer: ${review.reviewer}</p>
-                </li>`;
-        }
-        reviewsList.innerHTML = html;
-      }
-
-      function selectBook(isbn, name){
-          document.querySelector('#selectedName').innerHTML = name;
-          let selectedBook = document.querySelector('#selectedBook');
-          selectedBook.value = isbn;
-          getReviews(isbn, renderReviews);
-      }
-
-      window.selectBook = selectBook;
-
-reviewForm.addEventListener('submit', submitReivew);
-
-async function submitReivew(event){
-    event.preventDefault();
-    let form = event.target;
-    let formData = new FormData(form);
-    const { text, isbn } = Object.fromEntries(formData);
-    if(isbn === 'null'){
-        alert('Please select a book to review');
-    }
-    else if(auth.currentUser === null){
-        alert('Please login to review');
-    }else{
-      await createReview(auth, isbn, text);
-      M.toast({html: 'Review created!'});
-      form.reset();
-      getReviews(isbn, renderReviews);
-    }
-}
-
-      function renderBooks(books)
-      {
-        let booksArea = document.querySelector('#books');
-        let html = '';
-        for (let book of books){
-            html += `
-                <div class="col offset-s1 s10 m6 l4">
-                    <div class="card purple lighten-5">
-                        <div>
-                            <img src="${book.image}"  style="max-width:100%">
-                        </div>
-                        <div class="card-content">
-                            <span class="card-title">${book.title}</span>
-                            <p>${book.author}</p>
-                            <p>${book.year}</p>
-                            <p>${book.publisher}</p>
-                        </div>
-                    <div class="card-action">
-                      <button class="btn waves-effect" onclick="selectBook('${book.isbn}', '${book.title}')">
-                        Review
-                      </button>
-                    </div>
-                    </div>
-                </div>`;
-        }
-        booksArea.innerHTML = html;
-      }
-
-      getBooks(renderBooks);
       
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
