@@ -140,55 +140,85 @@
     <script type="module">
         import { auth, db } from './firebaseConfig.js';
         import { 
-          addDoc, 
-          collection, 
-          serverTimestamp 
+            addDoc, 
+            collection, 
+            serverTimestamp,
+            query,
+            where,
+            getDocs
         } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
       
         // Make function available globally
         window.addToFavorites = async function(animalData) {
-          const user = auth.currentUser;
-          if (!user) {
-            alert('Please sign in to add favorites');
-            window.location.href = 'index.html';
-            return;
-          }
-      
-          try {
-            await addDoc(collection(db, 'users', user.uid, 'favorites'), {
-              commonName: animalData["Common Name"],
-              scientificName: animalData["Scientific Name"] || '',
-              description: animalData["Description"] || '',
-              type: animalData["type"] || '',
-              image: animalData["Image"] || '',
-              createdAt: serverTimestamp()
-            });
-            showNotification('Added to favorites!');
-          } catch (error) {
-            console.error("Error adding favorite:", error);
-            showNotification('Failed to add favorite');
-          }
+            const user = auth.currentUser;
+            if (!user) {
+                alert('Please sign in to add favorites');
+                window.location.href = 'index.html';
+                return;
+            }
+        
+            try {
+                // Check if animal is already favorited
+                const favoritesRef = collection(db, 'users', user.uid, 'favorites');
+                const q = query(favoritesRef, where("commonName", "==", animalData["Common Name"]));
+                const querySnapshot = await getDocs(q);
+                
+                if (!querySnapshot.empty) {
+                    showNotification('This animal is already in your favorites!');
+                    return;
+                }
+        
+                // Add to favorites if not already present
+                await addDoc(favoritesRef, {
+                    commonName: animalData["Common Name"],
+                    scientificName: animalData["Scientific Name"] || '',
+                    description: animalData["Description"] || '',
+                    type: animalData["type"] || '',
+                    image: animalData["Image"] || '',
+                    localName: animalData["Local Name"] || '',
+                    countriesFound: getCountriesFound(animalData),
+                    createdAt: serverTimestamp()
+                });
+                showNotification('Added to favorites!');
+            } catch (error) {
+                console.error("Error adding favorite:", error);
+                showNotification('Failed to add favorite');
+            }
         };
       
         // Simple notification function
         function showNotification(message) {
-          const notification = document.createElement('div');
-          notification.textContent = message;
-          notification.style.position = 'fixed';
-          notification.style.bottom = '20px';
-          notification.style.right = '20px';
-          notification.style.backgroundColor = '#2e7d32';
-          notification.style.color = 'white';
-          notification.style.padding = '15px';
-          notification.style.borderRadius = '5px';
-          notification.style.zIndex = '1000';
-          document.body.appendChild(notification);
-      
-          setTimeout(() => {
-            notification.remove();
-          }, 3000);
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = '#2e7d32';
+            notification.style.color = 'white';
+            notification.style.padding = '15px';
+            notification.style.borderRadius = '5px';
+            notification.style.zIndex = '1000';
+            document.body.appendChild(notification);
+        
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
         }
-      </script>
+    
+        // Add getCountriesFound function if not already in main.js
+        function getCountriesFound(rec) {
+            const countryMap = {
+                "SVG": "Saint Vincent and the Grenadines",
+                "DOM": "Dominica",
+                "T&T": "Trinidad and Tobago",
+                "JAM": "Jamaica",
+                "GUY": "Guyana"
+            };
+            const foundIn = Object.keys(countryMap).filter(code => rec[code] === "yes");
+            const fullNames = foundIn.map(code => countryMap[code]);
+            return fullNames.length ? fullNames.join(", ") : "Not found in listed countries";
+        }
+    </script>
 
 </body>
 
