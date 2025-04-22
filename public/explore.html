@@ -28,8 +28,8 @@
 
         <ul class="nav-links">
             <li><a href="explore.html">Explore</a></li>
-            <li><a href="About Us.html">About Us</a></li>
-            <li><a href="Favourites.html">Favourites</a></li>
+            <li><a href="about-us.html">About Us</a></li>
+            <li><a href="favourites.html">Favourites</a></li>
         </ul>
     </nav>
 
@@ -51,7 +51,7 @@
             <a class="next" onclick="plusSlides(1)">❯</a>
         </div>
           
-        <!-- Dot indicators if you're using them -->
+        <!-- Dot indicators -->
         <div id="dot-container" class="dots"></div>
           
 
@@ -114,7 +114,7 @@
         </div>
     </main>
 
-    <script src="../main.js"></script>
+    <script src="main.js"></script>
 
     <footer class="site-footer">
         <div class="footer-content">
@@ -128,8 +128,8 @@
 
             <div class="footer-links">
                 <a href="explore.html">Explore</a>
-                <a href="About Us.html">About Us</a>
-                <a href="Favourites.html">Favourites</a>
+                <a href="about-us.html">About Us</a>
+                <a href="favourites.html">Favourites</a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -137,12 +137,58 @@
         </div>
     </footer>
 
-    <script>
-
-
-
-    </script>
-
+    <script type="module">
+        import { auth, db } from './firebaseConfig.js';
+        import { 
+          addDoc, 
+          collection, 
+          serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
+      
+        // Make function available globally
+        window.addToFavorites = async function(animalData) {
+          const user = auth.currentUser;
+          if (!user) {
+            alert('Please sign in to add favorites');
+            window.location.href = 'index.html';
+            return;
+          }
+      
+          try {
+            await addDoc(collection(db, 'users', user.uid, 'favorites'), {
+              commonName: animalData["Common Name"],
+              scientificName: animalData["Scientific Name"] || '',
+              description: animalData["Description"] || '',
+              type: animalData["type"] || '',
+              image: animalData["Image"] || '',
+              createdAt: serverTimestamp()
+            });
+            showNotification('Added to favorites!');
+          } catch (error) {
+            console.error("Error adding favorite:", error);
+            showNotification('Failed to add favorite');
+          }
+        };
+      
+        // Simple notification function
+        function showNotification(message) {
+          const notification = document.createElement('div');
+          notification.textContent = message;
+          notification.style.position = 'fixed';
+          notification.style.bottom = '20px';
+          notification.style.right = '20px';
+          notification.style.backgroundColor = '#2e7d32';
+          notification.style.color = 'white';
+          notification.style.padding = '15px';
+          notification.style.borderRadius = '5px';
+          notification.style.zIndex = '1000';
+          document.body.appendChild(notification);
+      
+          setTimeout(() => {
+            notification.remove();
+          }, 3000);
+        }
+      </script>
 
 </body>
 

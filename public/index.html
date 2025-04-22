@@ -18,14 +18,170 @@
         margin: 0;
         padding: 0;
       }
-      
+  
       body, html {
         height: 100%;
-        font-family: 'Poppins', Arial, sans-serif;
-        background: url('./images/signinbg.png') no-repeat center center/cover;
-        overflow: hidden;
+        font-family: poppins, Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: url('../images/signinbg.png') no-repeat center center/cover; /* Full-page background image */
+        overflow: auto;
       }
-      
+  
+      .container {
+        display: flex;
+        justify-content: space-between; /* Space between the two containers */
+        align-items: flex-start; /* Align items at the top */
+        height: auto; /* Adjust height to fit content */
+        margin-top: 150px; /* Move containers further down */
+        padding: 0 50px; /* Add padding for spacing */
+      }
+  
+      .right {
+        flex: 1; /* Allow the form container to take up space */
+        margin-right: 20px; /* Add spacing between the form and the widget */
+      }
+  
+      .form-box, .animal-widget {
+        background-color: rgba(241, 248, 233, 0.6); /* Soft green with 60% transparency */
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(46, 125, 50, 0.5); /* Greenish shadow */
+        width: 320px; /* Match the width of the animal widget */
+        flex-shrink: 0; /* Prevent shrinking */
+      }
+  
+      .form-box {
+        max-width: none; /* Remove the max-width restriction */
+      }
+  
+      h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #2e7d32; /* Forest green */
+      }
+  
+      input {
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        border: 1px solid #a5d6a7; /* Light green border */
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+  
+      input:focus {
+        border-color: #2e7d32; /* Forest green */
+        outline: none;
+        box-shadow: 0 0 5px rgba(46, 125, 50, 0.5);
+      }
+  
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: #2e7d32; /* Forest green */
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+  
+      button:hover {
+        background-color: #1b5e20; /* Darker green */
+      }
+  
+      .options {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 0.9rem;
+      }
+  
+      .options a {
+        color: #2e7d32; /* Forest green */
+        text-decoration: none;
+        margin: 0 5px;
+      }
+  
+      .options a:hover {
+        text-decoration: underline;
+      }
+  
+      /* Animations */
+      @keyframes slideRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+  
+      @keyframes fadeUp {
+        from { transform: translateY(30px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+  
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+  
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+          margin-top: 20px; /* Adjust spacing for smaller screens */
+        }
+  
+        .right {
+          flex: 1;
+          padding: 30px 10px;
+        }
+  
+        .form-box {
+          width: 100%;
+          padding: 20px; /* Reduce padding for smaller screens */
+        }
+  
+        h2 {
+          font-size: 1.5rem; /* Adjust heading size */
+        }
+      }
+  
+      header {
+        display: block; /* Restore the header */
+        position: absolute;
+        top: 10px; /* Move header up */
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        animation: fadeIn 3s ease-in-out;
+      }
+  
+      header h1 {
+        font-family: 'Anton', sans-serif; /* Use Anton font */
+        font-size: 100px; /* Adjust font size */
+        color: white; /* Set font color to white */
+        font-weight: 700;
+        margin: 0;
+      }
+  
+      header p {
+        font-size: 1.5rem; /* Slightly larger font size */
+        color: #2e7d32; /* Forest green */
+        margin-top: 10px;
+      }
+  
+      /* Subtle Animations for Form Elements */
+      input, button {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+  
+      input:hover, button:hover {
+        transform: scale(1.02); /* Slight zoom effect */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+      }
+  
+      /* Background Overlay */
       body::before {
         content: '';
         position: absolute;
@@ -33,129 +189,84 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: -1;
+        background: rgba(0, 0, 0, 0.4); /* Semi-transparent overlay */
+        z-index: -1; /* Place behind content */
       }
-      
-      /* Header */
-      header {
+  
+      /* Tooltip Styling */
+      .tooltip {
+        position: relative;
+        display: inline-block;
+      }
+  
+      .tooltip .tooltip-text {
+        visibility: hidden;
+        width: 200px;
+        background-color: #2e7d32; /* Forest green */
+        color: #ffc9b9;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
         position: absolute;
-        top: 20px;
+        z-index: 1;
+        bottom: 125%; /* Position above the input */
         left: 50%;
         transform: translateX(-50%);
-        text-align: center;
-        animation: fadeIn 2s ease-in-out;
+        opacity: 0;
+        transition: opacity 0.3s ease;
       }
-      
-      header h1 {
-        font-family: 'Anton', sans-serif;
-        font-size: 4.5rem;
-        color: white;
-        margin: 0;
+  
+      .tooltip:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
       }
-      
-      /* Forms */
-      .container {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-top: 150px;
-        padding: 0 50px;
-      }
-      
-      .form-box, .animal-widget {
-        background-color: rgba(241, 248, 233, 0.6);
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(46, 125, 50, 0.5);
-        width: 320px;
-        animation: fadeUp 1s ease-in-out;
-      }
-      
-      h2 {
-        text-align: center;
-        margin-bottom: 20px;
-        color: #2e7d32;
-      }
-      
-      .input-field {
-        position: relative;
-        margin-bottom: 20px;
-      }
-      
-      .input-field input {
-        width: 100%;
-        padding: 12px 15px;
-        border: 1px solid #a5d6a7;
-        border-radius: 8px;
-        font-size: 1rem;
-      }
-      
-      .input-field .material-icons {
-        position: absolute;
-        right: 10px;
-        top: 12px;
-        cursor: pointer;
-        color: #2e7d32;
-      }
-      
-      button {
-        width: 100%;
-        padding: 12px;
-        background-color: #2e7d32;
-        border: none;
-        border-radius: 8px;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s;
-      }
-      
-      button:hover {
-        background-color: #1b5e20;
-        transform: scale(1.02);
-      }
-      
-      /* Animal Widget */
+  
       .animal-widget {
-        text-align: center;
+        background-color: rgba(241, 248, 233, 0.6); /* Soft green with 60% transparency */
+        padding: 25px 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        width: 320px;
+        flex-shrink: 0; /* Prevent the widget from shrinking */
+        text-align: center; /* Center-align content */
+        animation: fadeUp 3s ease-in-out;
       }
-      
+  
+      .animal-widget h2 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+  
+      .animal-subtitle {
+        font-size: 16px;
+        color: #2e7d32; /* Forest green */
+        margin-bottom: 15px;
+      }
+  
       .animal-image {
         width: 100%;
-        max-height: 200px;
+        height: auto;
+        max-height: 200px; /* Limit the height of the image */
         border-radius: 8px;
-        object-fit: cover;
-        margin-top: 10px;
+        object-fit: cover; /* Ensure the image fits nicely */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow to the image */
       }
-      
-      /* Animations */
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+  
+      /* Style for the animal name using the Anton font */
+      #animal-name {
+        font-family: poppins, Arial, Helvetica, sans-serif;
+        font-size: 24px;
+        color: #2e7d32; /* Forest green */
+        margin-bottom: 15px;
       }
-      
-      @keyframes fadeUp {
-        from { transform: translateY(20px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-      }
-      
-      /* Mobile Responsiveness */
-      @media (max-width: 768px) {
-        .container {
-          flex-direction: column;
-          align-items: center;
-          margin-top: 100px;
-        }
-        
-        .form-box, .animal-widget {
-          width: 90%;
-          margin-bottom: 20px;
-        }
-        
-        header h1 {
-          font-size: 3rem;
-        }
+  
+      .form-box {
+        animation: fadeUp 3s ease-in-out;
       }
     </style>
   </head>
@@ -331,7 +442,8 @@
             email: email
           });
           
-          window.location.href = '/dashboard.html'; // Redirect on success
+          // Step 3: Redirect to explore page
+          window.location.href = '/index.html'; // Redirect on success
         } catch (error) {
           signUpError.textContent = error.message;
         }
@@ -340,13 +452,13 @@
       // Fetch Animal of the Day (Optional)
       async function fetchAnimalOfTheDay() {
         try {
-          const response = await fetch('script.googleusercontent.com/macros/echo?user_content_key=AehSKLjNcpsaLC8dAhmiiiWiUE_p6SGY1sz40C06nVyaEImgdWl6Uy0CypTRbcNHK_y6nl1ySAt4iltsEYIUhLZy90Lx_4bB5BXhPEC2obQ1VCATbo-ow2Chd89tbxCGWEuw-mBXNUmc5gQXfICDiZN93J_dBGvQsuhie1SLhytc_5AO-F8N6LLjg2dxfb881ptcl3mqEv2HcuwormjdA80Srds2VINRGykvSTu2MJuKwK5m-AXUt7ExCYWMMwmo7iCf_ABaWG5Uw065qywIfUURTzklkeUzd2ZRFjMrYHV_gAIK0Im4RbB9iNjgRTEjovgj5S8W0Dug&lib=MWE_QBjJXwXXD4bogbvGarrsOYE1fA0Zf');
+          const response = await fetch('https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLjNcpsaLC8dAhmiiiWiUE_p6SGY1sz40C06nVyaEImgdWl6Uy0CypTRbcNHK_y6nl1ySAt4iltsEYIUhLZy90Lx_4bB5BXhPEC2obQ1VCATbo-ow2Chd89tbxCGWEuw-mBXNUmc5gQXfICDiZN93J_dBGvQsuhie1SLhytc_5AO-F8N6LLjg2dxfb881ptcl3mqEv2HcuwormjdA80Srds2VINRGykvSTu2MJuKwK5m-AXUt7ExCYWMMwmo7iCf_ABaWG5Uw065qywIfUURTzklkeUzd2ZRFjMrYHV_gAIK0Im4RbB9iNjgRTEjovgj5S8W0Dug&lib=MWE_QBjJXwXXD4bogbvGarrsOYE1fA0Zf');
           const data = await response.json();
           const animals = data.records || data.data || [];
           const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
           
           document.getElementById('animal-name').textContent = randomAnimal["Common Name"] || "Animal of the Day";
-          document.getElementById('animal-image').src = randomAnimal.Image || './images/fallback-animal.jpg';
+          document.getElementById('animal-image').src = randomAnimal.Image || './images/scarletibis.jpg';
           document.getElementById('animal-image').style.display = 'block';
         } catch (error) {
           console.error("Failed to fetch animal:", error);

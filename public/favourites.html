@@ -5,116 +5,186 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Favourite Animals</title>
   <link rel="stylesheet" href="./css/style.css">
+  <!-- Load your existing Firebase implementation -->
+  <script type="module" src="./firebaseConfig.js"></script>
 </head>
 <body>
   <!-- Header Section -->
   <nav class="navbar">
     <div id="title-container">
-        <img src="./images/islandfriendslogowhite.png" alt="Island Friends Logo" id="logo">
-        <div class="title-text-group">
-          <a href="explore.html" id="logo-link">
-            <h1 id="title">Island Friends</h1>
-          </a>
-          <h6 id="tagline">Where Caribbean Wildlife Come Alive!</h6>
-        </div>
-      </div>          
-      
-    <a href="index.html" id="sign-out-link" style="position: absolute; top: 10px; right: 10px; text-decoration: none;">Sign Out</a>
+      <img src="./images/islandfriendslogowhite.png" alt="Island Friends Logo" id="logo">
+      <div class="title-text-group">
+        <a href="explore.html" id="logo-link">
+          <h1 id="title">Island Friends</h1>
+        </a>
+        <h6 id="tagline">Where Caribbean Wildlife Come Alive!</h6>
+      </div>
+    </div>          
+    
+    <a href="#" id="sign-out-link" style="position: absolute; top: 10px; right: 10px; text-decoration: none;">Sign Out</a>
 
     <ul class="nav-links">
-        <li><a href="explore.html">Explore</a></li>
-        <li><a href="About Us.html">About Us</a></li>
-        <li><a href="Favourites.html">Favourites</a></li>
+      <li><a href="explore.html">Explore</a></li>
+      <li><a href="about-us.html">About Us</a></li>
+      <li><a href="favourites.html">Favourites</a></li>
     </ul>
-</nav>
+  </nav>
 
   <!-- Main Content -->
   <main class="main-content">
     <h1 style="text-align: center; color: #28190E; font-size: 2rem;">🌟 My Favourites!</h1>
-    <div class="gallery" id="favourites-list"></div>
+    <div class="gallery" id="favourites-list">
+      <!-- Loading message will be replaced by favourites -->
+      <p>Loading your favourites...</p>
+    </div>
   </main>
 
   <!-- Footer Section -->
   <footer class="site-footer">
     <div class="footer-content">
-        <div class="footer-left">
-            <img src="./images/islandfriendslogowhite.png" alt="Island Friends Logo" id="footerlogo">
-            <div class="footer-text-group">
-              <h3>Island Friends</h3>
-              <h6>Where Caribbean Wildlife Come Alive!</h6>
-            </div>
-          </div>
-          
-        <div class="footer-links">
-            <a href="explore.html">Explore</a>
-            <a href="about-us.html">About Us</a>
-            <a href="favourites.html">Favourites</a>
+      <div class="footer-left">
+        <img src="./images/islandfriendslogowhite.png" alt="Island Friends Logo" id="footerlogo">
+        <div class="footer-text-group">
+          <h3>Island Friends</h3>
+          <h6>Where Caribbean Wildlife Come Alive!</h6>
         </div>
+      </div>
+      
+      <div class="footer-links">
+        <a href="explore.html">Explore</a>
+        <a href="about-us.html">About Us</a>
+        <a href="favourites.html">Favourites</a>
+      </div>
     </div>
     <div class="footer-bottom">
-        <p>&copy; 2025 Island Friends. Built in di Caribbean, for di Caribbean — by Regional Variables.</p>
+      <p>&copy; 2025 Island Friends. Built in di Caribbean, for di Caribbean — by Regional Variables.</p>
     </div>
-</footer>
+  </footer>
 
-  <!-- JavaScript -->
-  <script>
-    function loadFavourites() {
-      const currentUser = localStorage.getItem('currentUser');
-      if (!currentUser) {
-        alert('You must be signed in to view your favourites.');
+  <script type="module">
+    import { auth, db } from './firebaseConfig.js';
+    import { 
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+    
+    import { 
+      collection,
+      query,
+      getDocs,
+      deleteDoc,
+      doc,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
+  
+    // DOM elements
+    const favoritesList = document.getElementById('favourites-list');
+    const signOutLink = document.getElementById('sign-out-link');
+  
+    // Check auth state when page loads
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        alert('Please sign in to view favorites');
         window.location.href = 'index.html';
         return;
       }
-
-      const users = JSON.parse(localStorage.getItem('users')) || {};
-      const favourites = users[currentUser]?.favourites || [];
-
-      const container = document.getElementById('favourites-list');
-      if (favourites.length === 0) {
-        container.innerHTML = "<p>No favourites added yet.</p>";
-        return;
-      }
-
-      let html = '';
-      favourites.forEach((rec) => {
-        html += `
-          <div class="card">
-            <img src="${rec.Image || '../images/placeholder.png'}" alt="${rec["Common Name"]}">
-            <h3>${rec["Common Name"]}</h3>
-            <p><strong>Scientific Name:</strong> ${rec["Scientific Name"] || 'N/A'}</p>
-            <p>${rec["Description"] || 'No description available.'}</p>
-            <p><strong>Type:</strong> ${rec["type"] || 'N/A'}</p>
-            <button class="fav-btn" onclick="removeFromFavourites('${rec["Common Name"].replace(/'/g, "\\'")}')">❌ Remove</button>
+      loadFavorites(user.uid);
+    });
+  
+    // Load favorites from Firestore
+    async function loadFavorites(userId) {
+      try {
+        const q = query(collection(db, 'users', userId, 'favorites'));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          if (querySnapshot.empty) {
+            favoritesList.innerHTML = `
+              <div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 2rem;">
+                <p>No favorites yet!</p>
+                <a href="explore.html" style="color: #2e7d32; font-weight: bold;">
+                  Explore animals to add some
+                </a>
+              </div>
+            `;
+            return;
+          }
+  
+          let html = '';
+          querySnapshot.forEach((doc) => {
+            const animal = doc.data();
+            html += `
+              <div class="card" style="text-align: left;">
+                <img src="${animal.image || 'images/placeholder.png'}" alt="${animal.commonName}" loading="lazy">
+                <h3>${animal.commonName}</h3>
+                ${animal.scientificName ? `<p><strong>Scientific Name:</strong> ${animal.scientificName}</p>` : ''}
+                ${animal.localName ? `<p><strong>Local Name:</strong> ${animal.localName}</p>` : ''}
+                ${animal.description ? `<p><strong>Description:</strong> ${animal.description}</p>` : ''}
+                ${animal.type ? `<p><strong>Type:</strong> ${animal.type}</p>` : ''}
+                ${animal.countriesFound ? `<p><strong>Found in:</strong> ${animal.countriesFound}</p>` : ''}
+                <button class="fav-btn" onclick="removeFavorite('${userId}', '${doc.id}', '${escapeString(animal.commonName)}')">
+                  ❌ Remove
+                </button>
+              </div>
+            `;
+          });
+          favoritesList.innerHTML = html;
+        });
+      } catch (error) {
+        console.error("Error loading favorites:", error);
+        favoritesList.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
+            <p>Error loading favorites. Please try again later.</p>
           </div>
         `;
-      });
-
-      container.innerHTML = html;
-    }
-
-    function removeFromFavourites(commonName) {
-      const currentUser = localStorage.getItem('currentUser');
-      if (!currentUser) {
-        alert('You must be signed in to remove favourites.');
-        return;
       }
-
-      const users = JSON.parse(localStorage.getItem('users')) || {};
-      const favourites = users[currentUser]?.favourites || [];
-
-      // Filter out the item to be removed
-      users[currentUser].favourites = favourites.filter(item => item["Common Name"] !== commonName);
-
-      // Save the updated favourites back to localStorage
-      localStorage.setItem('users', JSON.stringify(users));
-
-      // Refresh the favourites list
-      loadFavourites();
-
-      alert(`${commonName} has been removed from your favourites.`);
     }
-
-    loadFavourites();
+  
+    // Helper function to escape strings
+    function escapeString(str) {
+      return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+  
+    // Remove favorite function
+    window.removeFavorite = async function(userId, docId, commonName) {
+      if (!confirm(`Are you sure you want to remove ${commonName} from your favorites?`)) return;
+      
+      try {
+        await deleteDoc(doc(db, 'users', userId, 'favorites', docId));
+        showNotification(`${commonName} removed from favorites`);
+      } catch (error) {
+        console.error("Error removing favorite:", error);
+        showNotification('Failed to remove favorite');
+      }
+    };
+  
+    // Simple notification function
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.textContent = message;
+      notification.style.position = 'fixed';
+      notification.style.bottom = '20px';
+      notification.style.right = '20px';
+      notification.style.backgroundColor = '#2e7d32';
+      notification.style.color = 'white';
+      notification.style.padding = '15px';
+      notification.style.borderRadius = '5px';
+      notification.style.zIndex = '1000';
+      document.body.appendChild(notification);
+  
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+  
+    // Sign out handler
+    signOutLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      signOut(auth).then(() => {
+        window.location.href = 'index.html';
+      }).catch((error) => {
+        console.error("Sign out error:", error);
+        showNotification('Failed to sign out');
+      });
+    });
   </script>
 </body>
 </html>
